@@ -1,13 +1,13 @@
+import os
 from migen import *
-from litex.soc.interconnect.csr import *
-from litex.soc.interconnect import wishbone
 
-class FastVDMA(Module, AutoCSR):
+class FastVDMA(Module):
     def __init__(self, platform):
-        platform.add_sources("DMATop.v")
+        platform.add_sources(os.path.abspath(os.path.dirname(__file__)),
+                             "DMATop.v")
 
         self.control_dat_i   = Signal(32)
-        self.constrol_dat_o  = Signal(32)
+        self.control_dat_o   = Signal(32)
         self.control_cyc_i   = Signal()
         self.control_stb_i   = Signal()
         self.control_we_i    = Signal()
@@ -49,7 +49,7 @@ class FastVDMA(Module, AutoCSR):
                             i_clock = ClockSignal(),
                             i_reset = ~ResetSignal(),
                             i_io_control_dat_i   = self.control_dat_i,
-                            o_io_constrol_dat_o  = self.constrol_dat_o,
+                            o_io_control_dat_o   = self.control_dat_o,
                             i_io_control_cyc_i   = self.control_cyc_i,
                             i_io_control_stb_i   = self.control_stb_i,
                             i_io_control_we_i    = self.control_we_i,
